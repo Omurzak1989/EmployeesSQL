@@ -1,0 +1,46 @@
+create table employees(
+    id serial primary key ,
+    first_name varchar,
+    last_name varchar,
+    email varchar,
+    salary int
+);
+
+insert into employees(first_name, last_name, email, salary)
+VALUES('Asan','Usonov','asan@gmail.com',10000),
+      ('Kurmanbek','Abdullaev','kurmanbek@gmail.com',15000),
+      ('Kasiet','Kubandykova','kasiet@gmail.com',30000),
+      ('Nurkyz','Adilbekova','nurkyz@gmail.com',25000),
+      ('Omurzak','Soorbaev','omurzak@gmail.com',20000);
+
+select * from employees;
+select first_name,last_name,salary from employees;
+
+select first_name,last_name,salary from employees where salary>15000;
+--Подзапросто иштеген мисал
+select first_name,last_name,salary from employees where salary>(select salary from employees where first_name='Asan');
+
+--Енамды тузуу жолу
+create type countries as enum('KG','USA','RUSSIA');
+--строкасын тузуу
+alter table employees add column country countries;
+--енамга дагы бир маани кошуу
+alter type countries add value 'KZ';
+--енамды очуруу
+drop type countries cascade ;
+
+--Массивди тузуу жана маани киргизуу жолу
+alter table employees add column social_medias varchar[];
+insert into employees(social_medias) values ('{"instagram","whatsapp","telegram"}');
+select * from employees;
+select employees.social_medias[1] from employees;
+
+alter table employees add column date_of_birth varchar[];
+insert into employees(date_of_birth)
+values ('{2000,1998,2004,2007}');
+select date_of_birth[2] from employees;
+select date_of_birth[1:2] from employees;
+update employees set date_of_birth[1]='1964';
+update employees set date_of_birth[4]='2024';
+update employees set date_of_birth[3]='1989';
+select employees.date_of_birth from employees;
